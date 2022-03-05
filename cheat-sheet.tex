@@ -51,7 +51,7 @@
     \item[$\mathcal{B}$] $= \mathcal{P}_{\neq \emptyset}(Q \times \Gamma^k \times \{-1, 0, 1\}^{k+1} \times (\Sigma' \cup \{\epsilon\}))$
 \end{itemize}
 
-Configuration $(q, B_1, \dots, B_k, i_0, \dots, \i_k) \in Q \times (\Gamma^+)^k \times \mathbb{N}^{k+1}$
+Configuration $(q, B_1, \dots, B_k, i_0, \dots, i_k) \in Q \times (\Gamma^+)^k \times \mathbb{N}^{k+1}$
 
 \newthing{Number of configurations} There exists at most $a \cdot |w| \cdot b^n$ ($a,b \in \mathbb{N}$) configurations that have
 at most length $n \in \mathbb{N}$. For $f$-space-bound TM: $a \cdot |w| \cdot b^{f(|w| + 2)}$.
@@ -96,11 +96,12 @@ If $L' \in \fat{P}$ and $L \preduce L'$ then $L \in \fat{P}$.
 
 \newthing{Schöning} $L_1, L_2 \subseteq \Sigma^*$ decidable, $\mathcal{C}_1, \mathcal{C}_2$ (effective) recur. enum. classes of decidable languages over $\Sigma^*$ and closed under finite variation, $L_1 \not \in \mathcal{C}_1$, $L_2 \not \in \mathcal{C}_2$. $\Rightarrow$ decidable $L \subseteq \Sigma^*$ with $L \not \in \mathcal{C}_1 \cup \mathcal{C}_2$. If $L_1 \in \fat{P}$ and $\emptyset \neq L_2 \neq \Sigma^*$, then also $L \preduce L_2$.
 
-\newthing{Ladner} If $\fat{P} \neq \fat{NP}$ then there eff. exists $L \in \fat{NP} \setminus \fat{P}$ that is not $\fat{NP}$-complete unter polynomial-time constructions.
+\newthing{Ladner} If $\fat{P} \neq \fat{NP}$ then there eff. exists $L \in \fat{NP} \setminus \fat{P}$ that is not $\fat{NP}$-complete under $\preduce$.
 
 \newthing{Sparse} $L \subseteq \Sigma^*$ is \emph{sparse} if there $\exists$ polynomial $p$ s.t. $|L \cap \Sigma^n| \leq p(n) \forallnatnum$.
 
-\newthing{Mahaney} If $\fat{P} \neq \fat{NP}$. Then there exists no sparse language that is $\fat{NP}$-hard under $\preduce$.
+\newthing{Mahaney} If $\fat{P} \neq \fat{NP}$. Then there exists no sparse language that is $\fat{NP}$-hard under $\preduce$ (or $\lreduce$).
+
 
 \newthing{Boolean circuit} Finite directed labeled graph $C = (V, E, l)$ for languages $\{0, 1\}^*$
 \begin{itemize}
@@ -120,7 +121,7 @@ If $L' \in \fat{P}$ and $L \preduce L'$ then $L \in \fat{P}$.
 
 \newthing{Uniform family} $\mathcal{C} = (C_n)_{n \in \mathbb{N}}$ is uniform if there exists log-space computable function $f$ with $f(1^n)=C_n \forallnatnum$
 
-\newthing{Nick's class} $k \in \mathbb{N}$. $\fat{NC}^k$ class of languages defined by c-polynomial uniform binary circuit families $\mathcal{C} = (C_n)_{n \in \mathbb{N}}$ with $db(C_n) \in \bigO{\log^k{n}} \forallnatnum$. $\fat{AC}^k$ for non-binary circuits.
+\newthing{Nick's class} $k \in \mathbb{N}$. $\fat{NC}^k$ class of languages defined by c-polynomial uniform binary circuit families $\mathcal{C} = (C_n)_{n \in \mathbb{N}}$ with $dp(C_n) \in \bigO{\log^k{n}} \forallnatnum$. $\fat{AC}^k$ for non-binary circuits.
 
 \newthing{Oracle TM} TM with additional write-only, auto-advance output tape and special states $q_y$, $q_n$, $q_?$. For $O \subseteq \Sigma^*$, spontaneous transition from $q_?$ to $q_{w \stackrel{?}{\in} O}$.
 \begin{itemize}
