@@ -1,0 +1,272 @@
+\documentclass[10pt, twocolumn, parskip=never]{scrartcl}
+\usepackage[ngerman]{babel}
+\usepackage[margin=0.5cm, landscape, a4paper]{geometry}
+\usepackage{csquotes}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{xcolor}
+
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+
+\usepackage{enumitem}
+\setlist{noitemsep}
+
+\usepackage{fontawesome}
+
+\definecolor{lightgray}{gray}{0.8}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+\newcommand{\todo}[1]{\textcolor{red}{\textbf{TODO:}} #1}
+\newcommand{\fat}[1]{\textbf{#1}}
+\newcommand{\newthing}[1]{\fat{\faicon{caret-right} #1}}
+\newcommand{\restrictforall}[1]{\;\textcolor{gray}{\forall #1}}
+\newcommand{\forallnatnum}{\restrictforall{n \in \mathbb{N}}}
+\newcommand{\complete}[1]{\footnotesize\textcolor{blue}{#1}}
+\newcommand{\DTIME}[1]{\textsf{DTIME}(#1)}
+\newcommand{\NTIME}[1]{\textsf{NTIME}(#1)}
+\newcommand{\DNTIME}[1]{\textbf{\ooalign{N\cr D}}\textsf{TIME}(#1)}
+\newcommand{\DSPACE}[1]{\textsf{DSPACE}(#1)}
+\newcommand{\NSPACE}[1]{\textsf{NSPACE}(#1)}
+\newcommand{\DNSPACE}[1]{\textbf{\ooalign{N\cr D}}\textsf{SPACE}(#1)}
+\newcommand{\prob}[1]{\textsf{#1}}
+\newcommand{\bigO}[1]{\mathcal{O}(#1)}
+\newcommand{\reduce}{\preceq}
+\newcommand{\preduce}{\reduce_{\fat{P}}}
+\newcommand{\lreduce}{\reduce_{\fat{L}}}
+\newcommand{\ptreduce}{\reduce^T_{\fat{P}}}
+
+\setlength{\parindent}{0em}
+
+\begin{document}
+
+\newthing{$k$-Turing Machine} $M = (Q, \Sigma, \Gamma, \Sigma', \delta, \square, q_0, q_+, q_-)$
+\begin{itemize}
+    \item[$Q$] states, $q_0, q_+, q_- \in Q$
+    \item[$\Sigma$] input symbols
+    \item[$\Gamma$] working symbols, $\Box \in \Gamma$
+    \item[$\Sigma'$] output symbols
+    \item[$\delta$] $:(Q \setminus \{q_+, q_-\}) \times (\Sigma \cup \{\vdash, \dashv\}) \times \Gamma^k \to \mathcal{B}$, no moving out of the input bounds
+    \item[$\mathcal{B}$] $= \mathcal{P}_{\neq \emptyset}(Q \times \Gamma^k \times \{-1, 0, 1\}^{k+1} \times (\Sigma' \cup \{\epsilon\}))$
+\end{itemize}
+
+Configuration $(q, B_1, \dots, B_k, i_0, \dots, \i_k) \in Q \times (\Gamma^+)^k \times \mathbb{N}^{k+1}$
+
+\newthing{Number of configurations} There exists at most $a \cdot |w| \cdot b^n$ ($a,b \in \mathbb{N}$) configurations that have
+at most length $n \in \mathbb{N}$. For $f$-space-bound TM: $a \cdot |w| \cdot b^{f(|w| + 2)}$.
+
+\newthing{$f$ is time-constructible} if $f(n) \geq n \forallnatnum$ and $\exists$ det. TM that stops on $a^n$ after exactly $f(n + 2)$ steps.
+
+\newthing{$f$ is space-constructible} if $f(n) \geq \log{n} \forallnatnum$ and $\exists$ $f$-space-bounded det. TM that computes $a^n \mapsto a^{f(n + 2)}$.
+
+\newthing{Linear speed-up} Let $L \in \DTIME{f}$ with $f(n) \geq n \forallnatnum$ and $\epsilon > 0$.
+Then $L \in \DTIME{g}$ with $g(n) = \lceil \epsilon f(n) \rceil \forallnatnum$.
+
+\newthing{Linear tape compression} $\DSPACE{f} \subseteq \DSPACE{g}$ $\forall$ $\epsilon > 0$ and $g(n) = \lceil \epsilon f(n) \rceil \forallnatnum$
+
+\newthing{Space hierarchy} $f$ space-constructible. $f(n) \geq \log{n}$. \\
+Then $\DSPACE{o(f)} \neq \DSPACE{\bigO{f}}$.
+
+\newthing{Time hierarchy} $\DTIME{o(f)} \subsetneq \DTIME{\bigO{f;g}}$ with $g(n) = n\log{n} \forallnatnum$
+
+\newthing{Savitch} $\NSPACE{f} \subseteq \DSPACE{f;g}$ with $g(n) = n^2 \forallnatnum$
+
+\newthing{Padding} $L \subseteq \Sigma^*$, $f(n) \geq n \forallnatnum$, $\# \not \in \Sigma$.
+$Pad^{\#}_{f}(L) = \{ w \#^{f(|w| + 2) - |w|} \mid w \in L \}$
+
+\newthing{Time - Translation} $f(n) \geq n \leq g(n) \forallnatnum$, $g$ time-constructible, output $\#^{f(n+2)}$ computable in time $g(f(n + 2) + 2)$ on input $\#^n$, $L \subseteq \Sigma^*$, $\# \not \in \Sigma$.
+\begin{itemize}
+  \item $\textsf{Pad}^\#_f(L) \in \DNTIME{\bigO{g}} \Leftrightarrow L \in \DNTIME{\bigO{f;g}}$
+\end{itemize}
+
+\newthing{Space - Translation} $f(n) \geq n$, $g(n) \geq \log{n} \forallnatnum$, $g$ space-constructible, binary repr. of $f(n+2)$ computable in space $g(f(n + 2) + 2)$ on input $\#^n$, $L \subseteq \Sigma^*$, $\# \not \in \Sigma$.
+\begin{itemize}
+  \item $\textsf{Pad}^\#_f(L) \in \DNSPACE{g} \Leftrightarrow L \in \DNSPACE{f;g}$
+\end{itemize}
+
+\newthing{Reduction} $L \subseteq \Sigma^*$, $L' \subseteq (\Sigma')^*$. $L \reduce L'$ iff $w \in L \Leftrightarrow f(w) \in L'$ for some \emph{Reduction} $f$. (log-space: $\lreduce$, polynomial-time: $\preduce$)
+If $L' \in \fat{P}$ and $L \preduce L'$ then $L \in \fat{P}$.
+
+\newthing{Complete Problems} $\mathcal{C}$ a class, $L$ a problem.
+\begin{itemize}
+  \item $\mathcal{C}\textsf{-hard}$ if $L' \lreduce L \restrictforall{L' \in \mathcal{C}}$
+  \item $\mathcal{C}\textsf{-complete}$ if $L$ $\mathcal{C}$-hard and $L \in \mathcal{C}$
+\end{itemize}
+
+\newthing{Schöning} $L_1, L_2 \subseteq \Sigma^*$ decidable, $\mathcal{C}_1, \mathcal{C}_2$ (effective) recur. enum. classes of decidable languages over $\Sigma^*$ and closed under finite variation, $L_1 \not \in \mathcal{C}_1$, $L_2 \not \in \mathcal{C}_2$. $\Rightarrow$ decidable $L \subseteq \Sigma^*$ with $L \not \in \mathcal{C}_1 \cup \mathcal{C}_2$. If $L_1 \in \fat{P}$ and $\emptyset \neq L_2 \neq \Sigma^*$, then also $L \preduce L_2$.
+
+\newthing{Ladner} If $\fat{P} \neq \fat{NP}$ then there eff. exists $L \in \fat{NP} \setminus \fat{P}$ that is not $\fat{NP}$-complete unter polynomial-time constructions.
+
+\newthing{Sparse} $L \subseteq \Sigma^*$ is \emph{sparse} if there $\exists$ polynomial $p$ s.t. $|L \cap \Sigma^n| \leq p(n) \forallnatnum$.
+
+\newthing{Mahaney} If $\fat{P} \neq \fat{NP}$. Then there exists no sparse language that is $\fat{NP}$-hard under $\preduce$.
+
+\newthing{Boolean circuit} Finite directed labeled graph $C = (V, E, l)$ for languages $\{0, 1\}^*$
+\begin{itemize}
+  \item $V = \{1, \dots, o\}$, $o \in \mathbb{N}$, $v < v' \restrictforall{(v, v') \in E}$
+  \item $l: V \to \{\wedge, \vee, \neg, 0, 1\} \cup \{x_1, \dots, x_n\}$ labeling gates
+  \item \emph{binary} if input rank is $\leq2$, \emph{monotone} if no negation, \emph{constant} if no inputs
+  \item $I(w)$ is evaluation of $C$ for $w$
+  \item \emph{size} of $C$ is $|C| = |V|$, \emph{depth} $dp(C)$ of $C$ is length of maximal path in $(V, E)$
+  \item $\mathcal{C} = (C_n)_{n \in \mathbb{N}}$ is \emph{family} of Boolean circuits
+  \item There ex. circuit family $\mathcal{C}=(C_n)_{n \in \mathbb{N}}$ that defines L such that $|C_n| \leq 2^n + 2n +3$ and $dp(C_n) \leq 3 \restrictforall{L \subseteq \{0,1\}^*}$
+  \item There ex. circuit family $\mathcal{C}=(C_n)_{n \in \mathbb{N}}$ of binary circuits $C_n$ that defines L and $|C_n| \leq n2^n+2n+1$ and $dp(C_n) \leq 1 + \rceil \log{n^+} \rceil +n$
+\end{itemize}
+
+\newthing{$c$-polynomial circuit family} $\mathcal{C} = (C_n)_{n \in \mathbb{N}}$, $f: \mathbb{N} \to \mathbb{N}$. $\mathcal{C}$ is \emph{$f$-size-bounded} if $|C_n| \leq f(n) \forallnatnum$. \emph{$c$-polynomial} if there is polynomial $p$ s.t. $\mathcal{C}$ is $p$-size-bounded.
+
+\newthing{Shannon} Fraction of $n$-ary Boolean functions with binary circuits of size smaller than $\frac{2^n}{3n}$ tends to $0$ for $n \to \infty$
+
+\newthing{Uniform family} $\mathcal{C} = (C_n)_{n \in \mathbb{N}}$ is uniform if there exists log-space computable function $f$ with $f(1^n)=C_n \forallnatnum$
+
+\newthing{Nick's class} $k \in \mathbb{N}$. $\fat{NC}^k$ class of languages defined by c-polynomial uniform binary circuit families $\mathcal{C} = (C_n)_{n \in \mathbb{N}}$ with $db(C_n) \in \bigO{\log^k{n}} \forallnatnum$. $\fat{AC}^k$ for non-binary circuits.
+
+\newthing{Oracle TM} TM with additional write-only, auto-advance output tape and special states $q_y$, $q_n$, $q_?$. For $O \subseteq \Sigma^*$, spontaneous transition from $q_?$ to $q_{w \stackrel{?}{\in} O}$.
+\begin{itemize}
+  \item $\fat{P}^O = \{ L(M^O) \mid \textsf{det. polyn.-time oracle TM } M^O \}$
+  \item $\fat{NP}^O = \{ L(M^O) \mid \textsf{polyn.-time oracle TM } M^O \}$
+  \item $O \in \fat{P}^O$
+  \item There exists $O \in \fat{PSPACE}$ s.t. $\fat{P}^O = \fat{NP}^O$.
+  \item There exists decidable $O \subseteq \{0,1\}^*$ s.t. $\fat{P}^O \neq \fat{NP}^O$.
+\end{itemize}
+
+\newthing{Polynomial Turing reduction} $A$, $B$ problems. $A \ptreduce B$ if there ex. det. polyn.-time oracle TM $M$ with $A = L(M^B)$.
+
+\newthing{Probabilistic TM} TM time-bounded by polynomial $p$ is \emph{probabilistic} if all computations for input $w$ have exactly length $p(|w|)$ and exactly 2 nondeterministic alternatives in each step.
+\begin{itemize}
+  \item \underline{Monte-Carlo accepts} $L \subseteq \Sigma^*$ if $\forall w \in \Sigma^*$, $w \not \in L$ iff all computations reject and $w \in L$ iff at least $\frac{2}{3}$ of all computations accept. $\fat{RP}$ set of Monte-carlo accepted languages.
+  \item $\textsf{PIT} \in \textsf{co-}\fat{RP}$
+  \item Monte-Carlo algorithms have uncertain correctness, Las Vegas algorithms have uncertain runtime.
+  \item \enquote{Zero-error Probabilistic Polynomial time} $ = \fat{ZPP} = \fat{RP} \cap \textsf{co-}\fat{RP}$
+  \item \underline{majority accepts} $L_{\textsf{MAJ}}(M) = \{ w \in \Sigma^* \mid \textsf{\underline{more} than half of all computations accept } w \}$
+  \item $\fat{PP}$ set of majority accepted languages
+  \item $\fat{P} \subseteq \fat{ZPP} = \textsf{co-}\fat{ZPP} = \fat{RP} \cap \textsf{co-}\fat{RP} \subseteq \fat{RP} \subseteq \fat{NP} \subseteq \fat{PP} = \textsf{co-}\fat{PP} \subseteq \fat{PSPACE}$
+  \item $\fat{RP} \subseteq \fat{BPP} = \textsf{co-}\fat{BPP} \subseteq \fat{PP}$
+  \item $\textsf{co-}\fat{RP} \subseteq \fat{BPP}$
+  \item $\fat{ZPP} \subseteq \textsf{co-}\fat{RP} \subseteq \textsf{co-}\fat{NP} \subseteq \fat{PP}$
+\end{itemize}
+
+\newthing{Randomized TM} det. TM with input tape $Z$ of infinite random bits. $f$-time-bounded if classic def. holds for \underline{every} content of $Z$. Accepts $w$ with prop. $\frac{\#Z \in \{0,1\}^{f(|w|)} \textsf{ w accepted}}{2^{f(|w|)}}$
+
+\newpage
+
+\newthing{Interactive Proof System} Pair $(A, B)$, $C = \{0, 1\}$, $A: \bigcup_{i \in \mathbb{N}}{(C^*)^{1+2i}} \to C^*$, $p,q$ polyn., $p$-time-bounded rand. TM $B$. $q(|w|)$ rounds. $A$ and $B$ share tape $W$. Round $i$:
+\begin{itemize}
+  \item[$\rightarrow$] $a_i = A(w, a_1, b_1, \dots, a_{i-1}, b_{i-1})$
+  \item[$\leftarrow$] $b_i = B(w, a_1, b_1, \dots, a_{i-1}, b_{i-1}, Z_1, \dots, Z_i)$
+\end{itemize}
+In round $q(|w|)$ \underline{Bob} decides whether to accept $w$. $(A,B)$ accepts $L$ if for all $w$:
+\begin{itemize}
+  \item $w \in L$, then Bob accepts input $w$ with prop. $\geq 1-2^{-|w|}$
+  \item $w \not \in L$, then \underline{no $(A', B)$ exists} s.t. Bob accepts $w$ with probability $\geq 2^{-|w|}$
+\end{itemize}
+\begin{itemize}
+  \item $\fat{IP}$ set of languages defined by IPs
+  \item Non-isomorphism of finite graphs is in $\fat{IP}$
+  \item $\fat{IP}$ is closed under $\preduce$
+\end{itemize}
+
+\vfill
+
+\begin{tikzpicture}[
+  eq/.style={dotted, ultra thick},
+  neq/.style={ultra thick},
+]
+  \node[] (nexptime) {$\fat{NEXPTIME}$};
+  \node[] (exptime) [below of=nexptime] {$\fat{EXPTIME}$};
+  \node[] (pspace) [below of=exptime] {$\fat{PSPACE}$};
+  \node[] (np) [below of=pspace] {$\fat{NP}$};
+  \node[] (npconp) [below of=np] {$\fat{NP} \cap \textsf{co-}\fat{NP}$};
+  \node[] (p) [below of=npconp] {$\fat{P}$};
+  \node[] (achierarchy) [below of=p] {$\fat{AC}^i \subseteq \fat{NC}^{i+1}$};
+  \node[] (nl) [below of=achierarchy] {$\fat{NL}$};
+  \node[] (l) [below of=nl] {$\fat{L}$};
+  \node[] (nc1) [below of=l] {$\fat{NC}^1$};
+  \node[] (ac0) [below of=nc1] {$\fat{AC}^0$};
+
+  \node[] (nspace) [right=3cm of np] {$\NSPACE{x} = \textsf{co-}\NSPACE{x}$};
+  \node[] (dspace) [below of=nspace] {$\DSPACE{x}$};
+  \node[] (polylogspace) [below of=dspace] {$\bigcup_{i\geq1}{\DSPACE{\log^i{x}}} = \bigcup_{i\geq1}{\NSPACE{\log^i{x}}}$};
+
+  \node[] (ppoly) [right=of npconp] {$\fat{P}_{/\textsf{poly}}$};
+  \node[] (ip) [right=0cm of pspace] {$=\;\fat{IP}$};
+  \node[] (mip) [right=0cm of nexptime] {$=\;\fat{MIP}$};
+
+  \node[] (ugap) [left=0.1cm of l] {\complete{UGAP}};
+  \node[] (gap) [left=0.1cm of nl] {\complete{GAP}};
+  \node[] (2sat) [left=0.1cm of nl.south west] {\complete{2-SAT}};
+  \node[] (lcfe) [left=0.1cm of p] {\complete{CFE}};
+  \node[] (hornsat) [left=0.1cm of p.south west] {\complete{HORN-SAT}};
+  \node[] (cv) [right=0.1cm of p.south east] {\complete{CV}};
+  \node[] (mcv) [right=0.1cm of p] {\complete{MCV}};
+  \node[] (sat) [left=0.1cm of np] {\complete{SAT}};
+  \node[] (satcnf) [right=0.1cm of np.north east] {\complete{SAT $\cap$ CNF}};
+  \node[] (3sat) [left=0.1cm of np.north west] {\complete{3-SAT}};
+  \node[] (vc) [right=0.1cm of np] {\complete{VC}};
+  \node[] (qbf) [left=0.1cm of pspace] {\complete{QBF}};
+  \node[] (regequiv) [left=0.1cm of pspace.south west] {\complete{RegEquiv($\Sigma$)}};
+  \node[] (reguniv) [left=0.1cm of pspace.north west] {\complete{RegUniv($\Sigma$)}};
+  \node[] (bdhalt) [left=0.1cm of exptime] {\complete{bdHalt}};
+  \node[] (bhalt) [left=0.1cm of nexptime] {\complete{bHalt}};
+
+  \draw[eq] (nexptime.south) -- (exptime.north);
+  \draw[eq] (exptime.south) -- (pspace.north);
+  \draw[eq] (pspace.south) -- (np.north);
+  \draw[eq] (np.south) -- (npconp.north);
+  \draw[eq] (npconp.south) -- (p.north);
+  \draw[eq] (p.south) -- (achierarchy.north);
+  \draw[eq] (achierarchy.south) -- (nl.north);
+  \draw[eq] (nl.south) -- (l.north);
+  \draw[eq] (l.south) -- (nc1.north);
+  \draw[neq] (nc1.south) -- (ac0.north);
+
+  \draw[neq] (pspace.south east) -- (nspace.north west);
+  \draw[eq] (nspace.south) -- (dspace.north);
+  \draw[neq] (dspace.south) -- (polylogspace.north);
+  \draw[neq] (polylogspace.south) -- (nl.north east);
+
+  \draw[neq] (p.north east) -- (ppoly.south west);
+\end{tikzpicture}
+
+\vfill
+
+$\DTIME{f} \subseteq \NTIME{f} \subseteq \DSPACE{f} \subseteq \NSPACE{f} \subseteq \DTIME{2^{\bigO{f}}}$
+
+Hennie \& Stearns: We can emulate k-band in 2-band with log overhead
+
+$\fat{L} \subseteq \fat{NL} \subseteq \DTIME{2^{\mathcal{O}(\log{x})}} = \fat{P}$
+
+$\fat{NL} \subsetneq \fat{CSL} = \fat{LBA} = \NSPACE{x} \subseteq \DTIME{2^{\mathcal{O}(x)}}$
+
+$\DSPACE{x^2} \subseteq \DTIME{2^{\mathcal{O}(x^2)}}$
+
+$\prob{GAP} \in \DSPACE{\log^2{x}}$
+
+$\fat{PSPACE} = \bigcup_{i \in \mathbb{N}_+}{\DSPACE{x^i}} = \bigcup_{i \in \mathbb{N}_+}{\NSPACE{x^i}}$ since $\NSPACE{x^i} \subseteq \DSPACE{x^{2i}}$ by Savitch
+
+$\fat{L} \subsetneq \DSPACE{\log^2{x}} \subsetneq \DSPACE{x} \subseteq \NSPACE{x} \subsetneq \fat{PSPACE}$
+
+$\DTIME{\mathcal{O}(x)} \subsetneq \DTIME{\mathcal{O}(x^2)} \subsetneq \fat{P}$
+
+$\fat{P} \subsetneq \DTIME{\mathcal{O}(2^x)} \subsetneq \DTIME{\mathcal{O}(2 + \epsilon)^x}$
+
+$\fat{DCSL} = \DSPACE{x} \neq \NSPACE{x} = \fat{CSL} \Rightarrow \fat{L} \neq \fat{NL}$
+
+$\fat{P} \neq \DSPACE{x} = \fat{DCSL}$
+
+$L \in \fat{L} \Leftrightarrow \exists \phi \in \textsf{FO}(\textsf{CTC})\colon L = \{ w \in \Sigma^* \mid w \models \phi \}$
+
+$L \in \fat{NL} \Leftrightarrow \exists \phi \in \textsf{FO}(\textsf{TC})\colon L = \{ w \in \Sigma^* \mid w \models \phi \}$
+
+$\textsf{PRIM} \in \fat{NP} \cap \textsf{co-}\fat{NP}$
+
+There are $\fat{NP}$-complete problems $\Rightarrow$ there are $\fat{NP}$-complete problems in $\NTIME{x}$
+
+If $\fat{P} \neq \fat{NP}$, then there eff. exists $L \in \fat{NP} \setminus \fat{P}$ that is not $\fat{NP}$-complete under $\lreduce$
+
+\vfill
+
+\todo{Razborov}
+
+\end{document}
