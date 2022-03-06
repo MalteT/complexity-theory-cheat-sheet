@@ -122,7 +122,7 @@ If $L' \in \fat{P}$ and $L \preduce L'$ then $L \in \fat{P}$.
   \item \emph{size} of $C$ is $|C| = |V|$, \emph{depth} $dp(C)$ of $C$ is length of maximal path in $(V, E)$
   \item $\mathcal{C} = (C_n)_{n \in \mathbb{N}}$ is \emph{family} of Boolean circuits
   \item There ex. circuit family $\mathcal{C}=(C_n)_{n \in \mathbb{N}}$ that defines L such that $|C_n| \leq 2^n + 2n +3$ and $dp(C_n) \leq 3 \restrictforall{L \subseteq \{0,1\}^*}$
-  \item There ex. circuit family $\mathcal{C}=(C_n)_{n \in \mathbb{N}}$ of binary circuits $C_n$ that defines L and $|C_n| \leq n2^n+2n+1$ and $dp(C_n) \leq 1 + \rceil \log{n^+} \rceil +n$
+  \item There ex. circuit family $\mathcal{C}=(C_n)_{n \in \mathbb{N}}$ of binary circuits $C_n$ that defines L and $|C_n| \leq n2^n+2n+1$ and $dp(C_n) \leq 1 + \lceil \log{n^+} \rceil +n$
 \end{itemize}
 
 \newthing{$c$-polynomial circuit family} $\mathcal{C} = (C_n)_{n \in \mathbb{N}}$, $f: \mathbb{N} \to \mathbb{N}$. $\mathcal{C}$ is \emph{$f$-size-bounded} if $|C_n| \leq f(n) \forallnatnum$. \emph{$c$-polynomial} if there is polynomial $p$ s.t. $\mathcal{C}$ is $p$-size-bounded.
