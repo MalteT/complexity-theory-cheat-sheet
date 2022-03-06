@@ -283,7 +283,7 @@ If $\fat{P} \neq \fat{NP}$, then there eff. exists $L \in \fat{NP} \setminus \fa
 
 \vspace{0.5em}
 
-\newthing{\fat{NL}-complete} $\prob{GAP} \in \DSPACE{\log^2{x}} \in \NSPACE{\log{x}} \in \fat{NL}$. Any $\log$-space-bounded TM can be transformed into a dir. graph with polynomial size. Each configuration (limited by $2^{\bigO{\log{x}}}$) resembles a vertex. Decide if accepting conf. is reachable from starting conf. with \prob{GAP}.
+\newthing{\fat{NL}-complete} $\prob{GAP} \in \DSPACE{\log^2{x}} \subseteq \NSPACE{\log{x}} \subseteq \fat{NL}$. Any $\log$-space-bounded TM can be transformed into a dir. graph with polynomial size. Each configuration (limited by $2^{\bigO{\log{x}}}$) resembles a vertex. Decide if accepting conf. is reachable from starting conf. with \prob{GAP}.
 
 We can reduce \prob{2-SAT} to \prob{GAP} and vice-versa. Each disjunction $\neg{x_1} \implies x_2$ of \prob{2-SAT} is edge in graph. If we can reach $x_1$ from $\neg{x_1}$ and vice-versa, the formula cotains contradiction.
 
